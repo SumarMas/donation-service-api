@@ -9,10 +9,14 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.stereotype.Component;
 
+/**
+ * Producer for publishing donation state change events to RabbitMQ.
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class DonationProducer {
+    /** RabbitTemplate for sending messages to RabbitMQ. */
     private final RabbitTemplate rabbitTemplate;
 
     /**

@@ -4,8 +4,7 @@ import com.platform.donation_service.dtos.donation.DonationCreateDto;
 import com.platform.donation_service.services.donation.IDonationCreateService;
 import com.platform.donation_service.services.donation.IDonationService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,8 +12,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DonationService implements IDonationService {
-    private static final Logger LOG = LoggerFactory.getLogger(DonationService.class);
+    /** Service for creating donations. */
     private final IDonationCreateService donationCreateService;
     /**
      * Creates a new donation.
@@ -24,7 +24,7 @@ public class DonationService implements IDonationService {
      */
     @Override
     public String createDonation(DonationCreateDto donationCreateDto) {
-        LOG.trace("Creating a new donation");
+        log.trace("Creating a new donation");
         return donationCreateService.createDonation(donationCreateDto);
     }
 }

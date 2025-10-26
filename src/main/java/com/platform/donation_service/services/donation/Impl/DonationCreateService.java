@@ -10,8 +10,7 @@ import com.platform.donation_service.repositories.DonationRepository;
 import com.platform.donation_service.services.donation.IDonationCreateService;
 import com.platform.donation_service.services.mercadoPago.IMercadoPagoService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,8 @@ import java.util.UUID;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DonationCreateService implements IDonationCreateService {
-    private static final Logger LOG = LoggerFactory.getLogger(DonationCreateService.class);
     /** Repository for managing donations in the database. */
     private final DonationRepository donationRepository;
     /** Context service for retrieving user and request context information. */
@@ -41,7 +40,7 @@ public class DonationCreateService implements IDonationCreateService {
     @Override
     @Transactional
     public String createDonation(DonationCreateDto donationCreateDto) {
-        LOG.trace("Entering createDonation");
+        log.trace("Entering createDonation");
         // get user id from context
         UUID userId = getUserId();
         // create donation entity and save to database
@@ -51,7 +50,7 @@ public class DonationCreateService implements IDonationCreateService {
         Preference preference = createMercadoPagoPreference(donationCreateDto, donationEntity.getDonationId());
         donationEntity.setPaymentId(preference.getId());
         saveDonationEntity(donationEntity);
-        LOG.trace("Donation created successfully with ID: {}", donationEntity.getDonationId());
+        log.trace("Donation created successfully with ID: {}", donationEntity.getDonationId());
         return preference.getInitPoint();
         //return preference.getSandboxInitPoint();
     }
@@ -73,16 +72,16 @@ public class DonationCreateService implements IDonationCreateService {
     }
     private void saveDonationEntity(DonationEntity donationEntity) {
         try {
-            LOG.trace("Entering saveDonationEntity");
+            log.trace("Entering saveDonationEntity");
             donationRepository.save(donationEntity);
         } catch (DataAccessException ex) {
-            LOG.error("Error saving donation to the database", ex);
+            log.error("Error saving donation to the database", ex);
             throw new CustomException("Failed to create donation. Please try again later.",
                     HttpStatus.INTERNAL_SERVER_ERROR, ex);
         }
     }
     private Preference createMercadoPagoPreference(DonationCreateDto donationCreateDto, UUID donationId) {
-        LOG.trace("Entering createMercadoPagoPreference");
+        log.trace("Entering createMercadoPagoPreference");
         return mercadoPagoService.createPreference(donationCreateDto.getAmount(),
                 donationCreateDto.getTitle(), donationId.toString());
     }

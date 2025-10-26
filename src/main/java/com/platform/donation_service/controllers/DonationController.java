@@ -22,6 +22,12 @@ public class DonationController {
     private static final Logger LOG = LoggerFactory.getLogger(DonationController.class);
     /** Service for handling donation-related operations. */
     private final IDonationService donationService;
+    /**
+     * Creates a new donation.
+     *
+     * @param donationCreateDto the DTO containing donation creation data
+     * @return ResponseEntity with the initialization point for the donation
+     */
     @PostMapping
     public ResponseEntity<String> createDonation(@RequestBody @Valid DonationCreateDto donationCreateDto) {
         LOG.trace("Creating a new donation");

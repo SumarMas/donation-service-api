@@ -11,9 +11,8 @@ import com.mercadopago.resources.preference.Preference;
 import com.platform.donation_service.controllers.manageExceptions.CustomException;
 import com.platform.donation_service.services.donation.IDonationProcessPayment;
 import com.platform.donation_service.services.mercadoPago.IMercadoPagoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +27,13 @@ import java.util.List;
  * Service implementation for interacting with MercadoPago API.
  */
 @Service
+@Slf4j
+@SuppressWarnings("PMD.CommentSize")
 public class MercadoPagoService implements IMercadoPagoService {
-    /** Logger instance for logging information and errors. */
-    private static final Logger LOG = LoggerFactory.getLogger(MercadoPagoService.class);
+    /** Maximum hours before preference expiration. */
+    private static final int MAX_HOURS_EXPIRATION = 24;
+    /** Notification type for payment processing. */
+    private static final String TYPE_PAYMENT = "payment";
     /** Service for processing donation payments. */
     private final IDonationProcessPayment donationProcessPayment;
     /** MercadoPago access token for authentication. */
@@ -83,7 +86,7 @@ public class MercadoPagoService implements IMercadoPagoService {
      */
     @Override
     public Preference createPreference(BigDecimal amount, String title, String donationId) {
-        LOG.trace("Creating a preference with donationId: {}", donationId);
+        log.trace("Creating a preference with donationId: {}", donationId);
         try {
             MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
             PreferenceItemRequest itemRequest = PreferenceItemRequest.builder()
@@ -106,7 +109,7 @@ public class MercadoPagoService implements IMercadoPagoService {
                     .toOffsetDateTime();
 
             OffsetDateTime expirationDateTo = LocalDateTime.now()
-                    .plusHours(24)
+                    .plusHours(MAX_HOURS_EXPIRATION)
                     .atZone(ZoneId.systemDefault())
                     .toOffsetDateTime();
             PreferenceRequest request = PreferenceRequest.builder()
@@ -119,10 +122,10 @@ public class MercadoPagoService implements IMercadoPagoService {
                     .build();
             PreferenceClient client = new PreferenceClient();
             Preference preference = client.create(request);
-            LOG.trace("Preference created with ID: {}", preference.getId());
+            log.trace("Preference created with ID: {}", preference.getId());
             return preference;
         } catch (MPException | MPApiException ex) {
-            LOG.error("Error creating MercadoPago preference: {}", ex.getMessage());
+            log.error("Error creating MercadoPago preference: {}", ex.getMessage());
             throw new CustomException("An error occurred while creating the payment. Please try again later.",
                     HttpStatus.INTERNAL_SERVER_ERROR, ex);
         }
@@ -137,9 +140,9 @@ public class MercadoPagoService implements IMercadoPagoService {
      */
     @Override
     public void processDonationPayment(String payload, String type, String dataId) {
-        LOG.trace("Processing donation payment with dataId: {}. Type: {}. Payload: {}", dataId, type, payload);
-        if (!"payment".equals(type)) {
-            LOG.warn("Unsupported notification type: {}", type);
+        log.trace("Processing donation payment with dataId: {}. Type: {}. Payload: {}", dataId, type, payload);
+        if (!TYPE_PAYMENT.equals(type)) {
+            log.warn("Unsupported notification type: {}", type);
             return;
         }
         try {
@@ -148,9 +151,9 @@ public class MercadoPagoService implements IMercadoPagoService {
             com.mercadopago.resources.payment.Payment payment =
                     paymentClient.get(Long.parseLong(dataId));
             donationProcessPayment.processPayment(payment);
-            LOG.trace("Donation payment processed for dataId: {}", dataId);
+            log.trace("Donation payment processed for dataId: {}", dataId);
         } catch (MPException | MPApiException ex) {
-            LOG.error("Error processing donation payment: {}", ex.getMessage(), ex);
+            log.error("Error processing donation payment: {}", ex.getMessage(), ex);
             throw new CustomException("An error occurred while processing the payment. Please try again later.",
                     HttpStatus.INTERNAL_SERVER_ERROR, ex);
         }

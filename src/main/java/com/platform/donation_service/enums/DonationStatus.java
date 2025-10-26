@@ -3,12 +3,12 @@ package com.platform.donation_service.enums;
  * Enum representing the status of a donation.
  */
 public enum DonationStatus {
-   /**  Donor initiated the payment, pending confirmation */
+   /**  Donor initiated the payment, pending confirmation. */
     CREATED,
-    /** Payment has been confirmed by MercadoPago */
+    /** Payment has been confirmed by MercadoPago. */
     CONFIRMED,
-    /** Donation liquidated to NGO (by payout-service) */
+    /** Donation liquidated to NGO (by payout-service). */
     PAID,
-    /** Payment was cancelled */
+    /** Payment was cancelled. */
     CANCELLED
 }
