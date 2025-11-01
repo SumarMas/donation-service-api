@@ -25,6 +25,9 @@ public class DonationMessageDto {
     /** The user ID who made the donation. */
     @JsonProperty("user_id")
     private UUID userId;
+    /** The campaign ID associated with the donation. */
+    @JsonProperty("campaign_id")
+    private UUID campaignId;
     /** The amount donated. */
     @JsonProperty("amount")
     private BigDecimal amount;

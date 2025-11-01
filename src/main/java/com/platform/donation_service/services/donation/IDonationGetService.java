@@ -7,7 +7,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Service interface for retrieving donations based on campaign IDs and donation status.
+ * Service interface for retrieving
+ * donations based on campaign IDs and donation status.
  */
 public interface IDonationGetService {
     /**

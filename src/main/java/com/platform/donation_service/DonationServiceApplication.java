@@ -2,10 +2,13 @@ package com.platform.donation_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
 /**
  * Main class for the Donation Service Spring Boot application.
  */
 @SpringBootApplication
+@EnableScheduling
 public class DonationServiceApplication {
     /**
      * Main method to run the Spring Boot application.

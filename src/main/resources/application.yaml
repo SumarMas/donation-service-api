@@ -66,3 +66,7 @@ mercado-pago:
 
 exchange:
     donation-status: ${EXCHANGE_DONATION_STATUS:donation.status}
+
+scheduler:
+  donation-auto-close:
+    rate-ms: 3600000 # cada 1 hora

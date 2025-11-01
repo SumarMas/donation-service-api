@@ -2,12 +2,11 @@ package com.platform.donation_service.services.donation.Impl;
 
 import com.mercadopago.resources.payment.Payment;
 import com.platform.donation_service.controllers.manageExceptions.CustomException;
-import com.platform.donation_service.dtos.donation.DonationMessageDto;
 import com.platform.donation_service.entities.DonationEntity;
 import com.platform.donation_service.enums.DonationStatus;
-import com.platform.donation_service.messaging.producer.DonationProducer;
 import com.platform.donation_service.repositories.DonationRepository;
 import com.platform.donation_service.services.donation.IDonationProcessPayment;
+import com.platform.donation_service.services.donation.IDonationPublishEventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -26,8 +25,8 @@ import java.util.UUID;
 public class DonationProcessPayment implements IDonationProcessPayment {
     /** Repository for managing donations in the database. */
     private final DonationRepository donationRepository;
-    /** Producer for publishing donation events to RabbitMQ. */
-    private final DonationProducer donationProducer;
+    /** Service for publishing donation events. */
+    private final IDonationPublishEventService donationPublishEventService;
 
 
     /**
@@ -89,14 +88,6 @@ public class DonationProcessPayment implements IDonationProcessPayment {
 
     private void publishDonationEvent(DonationEntity donation, DonationStatus status, DonationStatus previousStatus) {
         // Placeholder for event publishing logic
-        log.trace("Publishing event for donation ID: {}", donation.getDonationId());
-        DonationMessageDto donationMessageDto = DonationMessageDto.builder()
-                .donationId(donation.getDonationId())
-                .amount(donation.getAmount())
-                .donationStatus(status)
-                .userId(donation.getDonorId())
-                .previousDonationStatus(previousStatus)
-                .build();
-        donationProducer.publishDonationStateChangeEvent(donationMessageDto);
+        donationPublishEventService.publishDonationEvent(donation, status, previousStatus);
     }
 }
