@@ -35,14 +35,14 @@ public class DonationAutoCancelScheduler {
     @Scheduled(fixedRateString =  "${scheduler.donation-auto-close.rate-ms}")
     public void cancelOldConfirmedDonations() {
         LocalDateTime cutoff = LocalDateTime.now().minusHours(HOURS_THRESHOLD);
-        log.info("🕒 Running Donation Auto-Cancel job. Checking CONFIRMED donations before {}", cutoff);
+        log.info("🕒 Running Donation Auto-Cancel job. Checking CREATED donations before {}", cutoff);
 
         List<DonationEntity> oldConfirmed = donationRepository.findAllByStatusAndCreatedDatetimeBefore(
                 DonationStatus.CREATED, cutoff
         );
 
         if (oldConfirmed.isEmpty()) {
-            log.trace("✅ No CONFIRMED donations older than 24h found.");
+            log.trace("✅ No CREATED donations older than 24h found.");
             return;
         }
 

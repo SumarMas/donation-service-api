@@ -33,11 +33,11 @@ public class DonationProducer {
             rabbitTemplate.convertAndSend(rabbitConfig.getDonationExchangeName(), "", donationMessageDto);
             log.debug("Donation state change event published successfully");
         } catch (AmqpConnectException e) {
-            log.error("❌ No se pudo conectar con RabbitMQ. El broker podría estar caído.", e);
+            log.error("❌ Failed to connect to RabbitMQ. The broker might be down.", e);
         } catch (MessageConversionException e) {
-            log.error("❌ Error al serializar el mensaje de donación: {}", donationMessageDto, e);
+            log.error("❌ Error serializing donation message: {}", donationMessageDto, e);
         } catch (AmqpException e) {
-            log.error("❌ Error general al publicar mensaje en RabbitMQ.", e);
+            log.error("❌ General error publishing message to RabbitMQ.", e);
         }
     }
 }

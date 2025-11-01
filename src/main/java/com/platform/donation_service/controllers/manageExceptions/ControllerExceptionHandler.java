@@ -62,7 +62,7 @@ public class ControllerExceptionHandler {
                 .collect(Collectors.toMap(
                         FieldError::getField,
                         DefaultMessageSourceResolvable::getDefaultMessage,
-                        (msg1, msg2) -> msg1 // si hay duplicados, tomar el primero
+                        (msg1, msg2) -> msg1 // if duplicates exist, take the first one
                 ));
         String message = fieldErrors.entrySet().stream()
                 .map(entry -> entry.getKey() + ": " + entry.getValue())
