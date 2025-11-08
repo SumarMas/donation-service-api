@@ -1,8 +1,10 @@
 package com.platform.donation_service.services.donation;
 
+import com.platform.donation_service.dtos.donation.DonationDetailDto;
 import com.platform.donation_service.dtos.donation.DonationsDto;
 import com.platform.donation_service.enums.DonationStatus;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,4 +22,11 @@ public interface IDonationGetService {
      * @return A DonationsDto containing the filtered donations.
      */
     DonationsDto getDonationsByCampaignId(Set<UUID> campaignIds, Set<DonationStatus> status);
+
+    /**
+     * Retrieves all donations made by the user in the current context.
+     *
+     * @return A list of DonationDetailDto representing the user's donations.
+     */
+    List<DonationDetailDto> getAllDonationsByUserContext();
 }
