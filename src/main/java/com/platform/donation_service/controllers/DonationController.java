@@ -64,7 +64,8 @@ public class DonationController {
     /**
      * Retrieves donations made by the current user.
      *
-     * @return ResponseEntity with a list of DonationDetailDto representing the user's donations
+     * @return ResponseEntity with a list of
+     * DonationDetailDto representing the user's donations
      */
     @GetMapping("/get-my-donations")
     public ResponseEntity<List<DonationDetailDto>> getMyDonations() {

@@ -28,7 +28,8 @@ public class CampaignGetService implements ICampaignGetService {
      * Retrieves campaigns by their IDs.
      *
      * @param campaignIds A set of campaign IDs to retrieve.
-     * @return A map where the key is the campaign ID and the value is the corresponding CampaignDto.
+     * @return A map where the key is the campaign ID
+     * and the value is the corresponding CampaignDto.
      */
     @Override
     public Map<UUID, CampaignDto> getCampaignsByIds(Set<UUID> campaignIds) {
