@@ -31,14 +31,14 @@ public class CampaignRestClient implements ICampaignRestClient {
     private final RestTemplate restTemplate;
     /** ObjectMapper instance for JSON processing. */
     private final ObjectMapper objectMapper;
-    /** Base URL for the auth service. */
+    /** Base URL for the campaign service. */
     private final String baseUrl;
     /**
      * Constructs a CampaignRestClient with the specified RestTemplate and base URL.
      *
      * @param restTemplateParam the RestTemplate instance for making HTTP requests
      * @param objectMapperParam the ObjectMapper instance for JSON processing
-     * @param baseUrlParam      the base URL for the auth service,
+     * @param baseUrlParam      the base URL for the campaign service,
      *                          injected from application properties
      */
     public CampaignRestClient(RestTemplate restTemplateParam,
@@ -66,7 +66,7 @@ public class CampaignRestClient implements ICampaignRestClient {
             HttpEntity<Set<UUID>> entity = new HttpEntity<>(campaignIds, headers);
             return restTemplate.exchange(postUrl, HttpMethod.POST, entity, CampaignDto[].class);
         } catch (HttpClientErrorException | HttpServerErrorException ex) {
-            log.error("HTTP error during get data ngo: {}", ex.getMessage());
+            log.error("HTTP error during get data campaign: {}", ex.getMessage());
             handleError(ex);
             return null;
         }
