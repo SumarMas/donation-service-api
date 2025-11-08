@@ -157,7 +157,8 @@ public class DonationGetService implements IDonationGetService {
     }
 
     /**
-     * Builds a list of DonationDetailDto from grouped donations and their corresponding campaigns.
+     * Builds a list of DonationDetailDto from
+     * grouped donations and their corresponding campaigns.
      *
      * @param donationsByCampaign map of campaign IDs to donation lists
      * @param campaigns            map of campaign IDs to campaign details
@@ -185,7 +186,8 @@ public class DonationGetService implements IDonationGetService {
      * Groups donation entities by their campaign ID.
      *
      * @param donationEntities list of donations to group
-     * @return a map where the key is the campaign ID and the value is the list of donations for that campaign
+     * @return a map where the key is the campaign ID and
+     * the value is the list of donations for that campaign
      */
     private Map<UUID, List<DonationEntity>> groupDonationsByCampaignId(List<DonationEntity> donationEntities) {
         return donationEntities.stream()
