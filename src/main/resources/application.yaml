@@ -70,3 +70,7 @@ exchange:
 scheduler:
   donation-auto-close:
     rate-ms: 3600000 # cada 1 hora
+
+pool:
+  campaign:
+    url: ${CAMPAIGN_SERVICE_URL:http://localhost:9080/campaigns}

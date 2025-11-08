@@ -38,4 +38,13 @@ public interface DonationRepository extends JpaRepository<DonationEntity, UUID> 
      * that match the provided status and were created before the cutoff datetime.
      */
     List<DonationEntity> findAllByStatusAndCreatedDatetimeBefore(DonationStatus status, LocalDateTime cutoff);
+
+    /**
+     * Finds all donations made by a specific donor.
+     *
+     * @param donorId The unique identifier of the donor.
+     * @return A list of DonationEntity objects
+     * associated with the specified donor ID.
+     */
+    List<DonationEntity> findAllByDonorIdIs(UUID donorId);
 }

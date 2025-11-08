@@ -1,6 +1,7 @@
 package com.platform.donation_service.controllers;
 
 import com.platform.donation_service.dtos.donation.DonationCreateDto;
+import com.platform.donation_service.dtos.donation.DonationDetailDto;
 import com.platform.donation_service.dtos.donation.DonationsDto;
 import com.platform.donation_service.enums.DonationStatus;
 import com.platform.donation_service.services.donation.IDonationService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -56,6 +58,19 @@ public class DonationController {
             @RequestParam(required = true, name = "status") Set<DonationStatus> status) {
         LOG.trace("Getting donations by campaign");
         DonationsDto donationsDto = donationService.getDonationsByCampaignId(campaignIds, status);
+        return ResponseEntity.ok(donationsDto);
+    }
+
+    /**
+     * Retrieves donations made by the current user.
+     *
+     * @return ResponseEntity with a list of
+     * DonationDetailDto representing the user's donations
+     */
+    @GetMapping("/get-my-donations")
+    public ResponseEntity<List<DonationDetailDto>> getMyDonations() {
+        LOG.trace("Getting my donations");
+        List<DonationDetailDto> donationsDto = donationService.getAllDonationsByUserContext();
         return ResponseEntity.ok(donationsDto);
     }
 

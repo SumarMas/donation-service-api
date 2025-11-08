@@ -1,6 +1,7 @@
 package com.platform.donation_service.services.donation.Impl;
 
 import com.platform.donation_service.dtos.donation.DonationCreateDto;
+import com.platform.donation_service.dtos.donation.DonationDetailDto;
 import com.platform.donation_service.dtos.donation.DonationsDto;
 import com.platform.donation_service.enums.DonationStatus;
 import com.platform.donation_service.services.donation.IDonationCreateService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -48,5 +50,16 @@ public class DonationService implements IDonationService {
     public DonationsDto getDonationsByCampaignId(Set<UUID> campaignIds, Set<DonationStatus> status) {
         log.trace("Getting donations by campaign");
         return donationGetService.getDonationsByCampaignId(campaignIds, status);
+    }
+
+    /**
+     * Retrieves all donations made by the user in the current context.
+     *
+     * @return A list of DonationDetailDto representing the user's donations.
+     */
+    @Override
+    public List<DonationDetailDto> getAllDonationsByUserContext() {
+        log.trace("Getting all donations by user context");
+        return donationGetService.getAllDonationsByUserContext();
     }
 }

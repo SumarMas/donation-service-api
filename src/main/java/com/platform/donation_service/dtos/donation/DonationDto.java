@@ -3,9 +3,9 @@ package com.platform.donation_service.dtos.donation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.platform.donation_service.enums.DonationStatus;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ import java.util.UUID;
  * Data Transfer Object (DTO) for Donation information.
  */
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class DonationDto {
