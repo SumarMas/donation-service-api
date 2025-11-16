@@ -86,4 +86,4 @@ pool:
   campaign:
     url: ${CAMPAIGN_SERVICE_URL:http://localhost:9080/campaigns}
   payout:
-    url: ${PAYOUT_SERVICE_URL:http://localhost:9090/payouts}
+    url: ${PAYOUT_SERVICE_URL:http://localhost:9080/payouts}
