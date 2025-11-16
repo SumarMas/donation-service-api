@@ -1,48 +1,20 @@
-package com.platform.donation_service.configs;
+package com.platform.donation_service.configs.rabbit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * RabbitMQ configuration for publishing donation events.
+ * RabbitMQ configuration for the User Service.
  * Uses the same ObjectMapper configured in MappersConfig.
  */
 @Configuration
 public class RabbitConfig {
-    /** Name of the donation exchange. */
-    private final String donationExchangeName;
-    /**
-     * Constructs a RabbitConfig with the specified donation exchange name.
-     *
-     * @param donationExchangeNameParam the name of the donation exchange,
-     *                             injected from application properties
-     */
-    public RabbitConfig(@Value("${exchange.donation-status}") String donationExchangeNameParam) {
-        this.donationExchangeName = donationExchangeNameParam;
-    }
-    /** Getter for donationExchange.
-     * @return the name of the donation exchange
-     */
-    public String getDonationExchangeName() {
-        return donationExchangeName;
-    }
-    /**
-     * Defines a FanoutExchange for donation events.
-     *
-     * @return the FanoutExchange bean
-     */
-    @Bean
-    public FanoutExchange donationExchange() {
-        return new FanoutExchange(donationExchangeName, true, false);
-    }
-
     /**
      * Message converter using the shared ObjectMapper (supports LocalDateTime, etc.).
      * @param objectMapper the shared ObjectMapper bean
@@ -65,5 +37,19 @@ public class RabbitConfig {
         template.setMessageConverter(jsonMessageConverter);
         template.setChannelTransacted(true);
         return template;
+    }
+
+    /**
+     * Defines a RabbitAdmin bean that will automatically declare queues,
+     * exchanges and bindings defined in the Spring context.
+     *
+     * @param connectionFactory the RabbitMQ connection factory
+     * @return the RabbitAdmin bean
+     */
+    @Bean
+    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
+        RabbitAdmin admin = new RabbitAdmin(connectionFactory);
+        admin.setAutoStartup(true); // 🔹 ensures declarations run on startup
+        return admin;
     }
 }

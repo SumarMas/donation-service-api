@@ -20,6 +20,9 @@ spring:
     port: ${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USER:guest}
     password: ${RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        auto-startup: false
 
 server:
   port: 8085
@@ -55,6 +58,10 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_SERVER_URL:http://localhost:9061/eureka/}
+    registry-fetch-interval-seconds: 5
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
 
 mercado-pago:
   access-token: ${MERCADO_PAGO_ACCESS_TOKEN:APP_USR-6659598449973748-102510-4f1861533195bceafecbc1db62791db1-2946101252}
@@ -64,8 +71,12 @@ mercado-pago:
     pending: ${MERCADO_PAGO_URL_PENDING:https://www.youtube.com/watch?v=mi_5tf9n7-Y}
     notify: ${MERCADO_PAGO_URL_NOTIFY:https://octennially-humanly-galileo.ngrok-free.dev/api/v1/webhooks/mercado-pago?source_news=webhooks}
 
-exchange:
-    donation-status: ${EXCHANGE_DONATION_STATUS:donation.status}
+queues:
+  donation:
+    exchange: ${EXCHANGE_DONATION_STATUS:donation.status}
+  payout-status:
+    exchange: ${EXCHANGE_PAYOUT_STATUS:payout.status}
+    queue: ${QUEUE_PAYOUT_STATUS:payout.status.queue}
 
 scheduler:
   donation-auto-close:
@@ -74,3 +85,5 @@ scheduler:
 pool:
   campaign:
     url: ${CAMPAIGN_SERVICE_URL:http://localhost:9080/campaigns}
+  payout:
+    url: ${PAYOUT_SERVICE_URL:http://localhost:9080/payouts}
