@@ -1,6 +1,7 @@
 package com.platform.donation_service.messaging.producer;
 
-import com.platform.donation_service.configs.RabbitConfig;
+
+import com.platform.donation_service.configs.rabbit.exchanges.ExchangeAbstractConfig;
 import com.platform.donation_service.dtos.donation.DonationMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +20,8 @@ import org.springframework.stereotype.Component;
 public class DonationProducer {
     /** RabbitTemplate for sending messages to RabbitMQ. */
     private final RabbitTemplate rabbitTemplate;
-    /** RabbitMQ configuration for donation events. */
-    private final RabbitConfig rabbitConfig;
+    /** Configuration for donation events exchanges. */
+    private final ExchangeAbstractConfig donationStatusExchangeConfig;
 
     /**
      * Publishes a donation state change event to the RabbitMQ exchange.
@@ -30,7 +31,7 @@ public class DonationProducer {
     public void publishDonationStateChangeEvent(DonationMessageDto donationMessageDto) {
         try {
             log.debug("Entering publishDonationStateChangeEvent with donationMessageDto: {}", donationMessageDto);
-            rabbitTemplate.convertAndSend(rabbitConfig.getDonationExchangeName(), "", donationMessageDto);
+            rabbitTemplate.convertAndSend(donationStatusExchangeConfig.getExchangeName(), "", donationMessageDto);
             log.debug("Donation state change event published successfully");
         } catch (AmqpConnectException e) {
             log.error("❌ Failed to connect to RabbitMQ. The broker might be down.", e);

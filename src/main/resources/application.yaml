@@ -20,6 +20,9 @@ spring:
     port: ${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USER:guest}
     password: ${RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        auto-startup: false
 
 server:
   port: 8085
@@ -64,8 +67,11 @@ mercado-pago:
     pending: ${MERCADO_PAGO_URL_PENDING:https://www.youtube.com/watch?v=mi_5tf9n7-Y}
     notify: ${MERCADO_PAGO_URL_NOTIFY:https://octennially-humanly-galileo.ngrok-free.dev/api/v1/webhooks/mercado-pago?source_news=webhooks}
 
-exchange:
-    donation-status: ${EXCHANGE_DONATION_STATUS:donation.status}
+queues:
+  donation:
+    exchange: ${EXCHANGE_DONATION_STATUS:donation.status}
+  payout-status:
+    exchange: ${EXCHANGE_PAYOUT_STATUS:payout.status}
 
 scheduler:
   donation-auto-close:
