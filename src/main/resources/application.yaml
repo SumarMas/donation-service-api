@@ -76,6 +76,7 @@ queues:
     exchange: ${EXCHANGE_DONATION_STATUS:donation.status}
   payout-status:
     exchange: ${EXCHANGE_PAYOUT_STATUS:payout.status}
+    queue: ${QUEUE_PAYOUT_STATUS:payout.status.queue}
 
 scheduler:
   donation-auto-close:
@@ -84,3 +85,5 @@ scheduler:
 pool:
   campaign:
     url: ${CAMPAIGN_SERVICE_URL:http://localhost:9080/campaigns}
+  payout:
+    url: ${PAYOUT_SERVICE_URL:http://localhost:9090/payouts}
