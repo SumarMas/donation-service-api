@@ -1,6 +1,7 @@
 package com.platform.donation_service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @SpringBootApplication
 @EnableScheduling
+@EnableRabbit
 @Slf4j
 public class DonationServiceApplication implements CommandLineRunner {
     /** RabbitListenerEndpointRegistry to manage RabbitMQ listeners. */
