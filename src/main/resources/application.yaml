@@ -58,6 +58,10 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_SERVER_URL:http://localhost:9061/eureka/}
+    registry-fetch-interval-seconds: 5
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
 
 mercado-pago:
   access-token: ${MERCADO_PAGO_ACCESS_TOKEN:APP_USR-6659598449973748-102510-4f1861533195bceafecbc1db62791db1-2946101252}
