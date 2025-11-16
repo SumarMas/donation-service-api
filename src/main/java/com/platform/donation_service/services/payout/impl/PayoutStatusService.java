@@ -27,8 +27,8 @@ public class PayoutStatusService implements IPayoutStatusService {
     @Override
     public void handlePayoutStatusUpdate(PayoutMessageDto messageDto) {
         log.trace("handlePayoutStatusUpdate payoutRequestDto={}", messageDto);
-        if ((messageDto.getPreviousPayoutStatus() == null || messageDto.getPreviousPayoutStatus().equals(PayoutStatus.PENDING))
-                && messageDto.getPayoutStatus() == PayoutStatus.PENDING) {
+        if (messageDto.getPreviousPayoutStatus().equals(PayoutStatus.PENDING)
+                && messageDto.getPayoutStatus().equals(PayoutStatus.APPROVED)) {
             log.trace("Managing donation paid event for payout status update: {}", messageDto);
             donationPaidService.processDonationPaidEvent(messageDto);
         } else {
