@@ -38,7 +38,7 @@ public class PayoutStatusConsumer {
                                           @Header(AmqpHeaders.CHANNEL) Channel channel) {
         try {
             try {
-                log.info("Received Payout Status Message from Donation Service");
+                log.info("Received Payout Status Message from Payout Service");
                 payoutStatusService.handlePayoutStatusUpdate(payoutMessageDto);
                 channel.basicAck(deliveryTag, false);
             } catch (CustomException ex) {
@@ -49,7 +49,7 @@ public class PayoutStatusConsumer {
                 channel.basicNack(deliveryTag, false, true);
             }
         } catch (IOException e) {
-            log.error("IO exception during message acknowledgment: {}", e.getMessage(), ex);
+            log.error("IO exception during message acknowledgment: {}", e.getMessage(), e);
         }
     }
 }
