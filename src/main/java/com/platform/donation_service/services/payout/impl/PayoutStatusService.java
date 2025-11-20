@@ -27,12 +27,19 @@ public class PayoutStatusService implements IPayoutStatusService {
     @Override
     public void handlePayoutStatusUpdate(PayoutMessageDto messageDto) {
         log.trace("handlePayoutStatusUpdate payoutRequestDto={}", messageDto);
-        if (messageDto.getPreviousPayoutStatus().equals(PayoutStatus.PENDING)
-                && messageDto.getPayoutStatus().equals(PayoutStatus.APPROVED)) {
-            log.trace("Managing donation paid event for payout status update: {}", messageDto);
+        PayoutStatus previousStatus = messageDto.getPreviousPayoutStatus();
+        PayoutStatus currentStatus = messageDto.getPayoutStatus();
+        if ((previousStatus == null || previousStatus.equals(PayoutStatus.PENDING))
+                && currentStatus.equals(PayoutStatus.PENDING)) {
+            log.info("No action needed for payout status update: {}", messageDto);
+        } else if (previousStatus == null) {
+            log.warn("Received PayoutStatus update with null previous status: {}", messageDto);
+        } else if (previousStatus.equals(PayoutStatus.PENDING)
+                && currentStatus.equals(PayoutStatus.APPROVED)) {
+            log.trace("Managing payout paid event for payout status update: {}", messageDto);
             donationPaidService.processDonationPaidEvent(messageDto);
         } else {
-            log.debug("No action taken for payout status update: {}", messageDto);
+            log.info("No action taken for payout status update: {}", messageDto);
         }
     }
 }

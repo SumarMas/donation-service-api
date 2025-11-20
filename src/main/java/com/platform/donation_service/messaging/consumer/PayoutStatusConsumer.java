@@ -42,14 +42,14 @@ public class PayoutStatusConsumer {
                 payoutStatusService.handlePayoutStatusUpdate(payoutMessageDto);
                 channel.basicAck(deliveryTag, false);
             } catch (CustomException ex) {
-                log.error("Custom exception processing payout status message: {}", ex.getMessage());
+                log.error("Custom exception processing payout status message: {}", ex.getMessage(), ex);
                 channel.basicNack(deliveryTag, false, true);
             } catch (Exception ex) {
-                log.error("Unexpected error processing payout status message: {}", ex.getMessage());
+                log.error("Unexpected error processing payout status message: {}", ex.getMessage(), ex);
                 channel.basicNack(deliveryTag, false, true);
             }
         } catch (IOException e) {
-            log.error("IO exception during message acknowledgment: {}", e.getMessage());
+            log.error("IO exception during message acknowledgment: {}", e.getMessage(), ex);
         }
     }
 }
