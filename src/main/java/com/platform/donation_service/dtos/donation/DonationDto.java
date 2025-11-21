@@ -1,5 +1,6 @@
 package com.platform.donation_service.dtos.donation;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.platform.donation_service.enums.DonationStatus;
 import lombok.AllArgsConstructor;
@@ -49,4 +50,8 @@ public class DonationDto {
     /** Date and time when the payment was made. */
     @JsonProperty("payment_datetime")
     private LocalDateTime paymentDateTime;
+    /** Date and time when the donation record was created. */
+    @JsonProperty("created_at")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime createdAt;
 }
