@@ -90,6 +90,7 @@ public class DonationGetService implements IDonationGetService {
                 .currency(donationEntity.getCurrency())
                 .paymentMethod(donationEntity.getPaymentMethod())
                 .paymentDateTime(donationEntity.getPaymentDatetime())
+                .createdAt(donationEntity.getCreatedDatetime())
                 .build();
     }
 
@@ -105,6 +106,7 @@ public class DonationGetService implements IDonationGetService {
                 .currency(donationEntity.getCurrency())
                 .paymentMethod(donationEntity.getPaymentMethod())
                 .paymentDateTime(donationEntity.getPaymentDatetime())
+                .createdAt(donationEntity.getCreatedDatetime())
                 .campaign(campaignDto)
                 .build();
     }
